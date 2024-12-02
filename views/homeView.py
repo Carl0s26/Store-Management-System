@@ -1,18 +1,70 @@
-import requests
-import flet as ft 
-import threading
-from deliveryAPI import run_api
 
-
-api_thread = threading.Thread(target=run_api, daemon=True)
-api_thread.start()
-
-print("Hello World")
-
-
-# import flet as ft
+import flet as ft
 # import sqlite3
 # import base64
+
+
+#! FINISH the view desing
+
+def home_View(router):
+    #* defining view content
+
+    content = ft.Container(
+        ft.Text("fwebifbwefbwiefuwen")
+            #ft.Row(controls=[
+            #ft.ElevatedButton("Go to View 1", on_click=lambda e: viewHandler(videogamesView)),
+            #ft.ElevatedButton("Go to View 2", on_click=lambda e: viewHandler(pizzaView)),
+        )
+    return content
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    # videogamesView = ft.Container(
+    #     content=[
+    #         ft.Text("This is View 1", size=20),
+    #         ft.ElevatedButton("Go to Home", on_click=lambda e: viewHandler(homeView)),
+    #         ft.ElevatedButton("Go to View 2", on_click=lambda e: viewHandler(pizzaView)),
+    #     ],
+    # )
+
+    # pizzaView = ft.Container(
+    #     content=[
+    #         ft.Text("This is View 2", size=20),
+    #         ft.ElevatedButton("Go to Home", on_click=lambda e: viewHandler(homeView)),
+    #         ft.ElevatedButton("Go to View 2", on_click=lambda e: viewHandler(videogamesView)),
+    #     ]
+    # )
+    # pizzaView.visible = False
+    # videogamesView.visible = False
+    # page.add(homeView,videogamesView,pizzaView)
+    # def viewHandler(view):
+    #     pizzaView.visible = False
+    #     videogamesView.visible = False
+    #     homeView.visible = False
+    #     view.visible = True
+    #     page.update()
+
+#---------------------------------------------------------------------------------------------------------------#
+#---------------------------------------------------------------------------------------------------------------#
+#---------------------------------------------------------------------------------------------------------------#
 
 # conn = sqlite3.connect("images.db", check_same_thread=False)
 # cursor = conn.cursor()
