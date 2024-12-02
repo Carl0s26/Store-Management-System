@@ -1,3 +1,12 @@
+import requests
+import flet as ft 
+import threading
+from deliveryAPI import run_api
+
+
+api_thread = threading.Thread(target=run_api, daemon=True)
+api_thread.start()
+
 print("Hello World")
 
 
