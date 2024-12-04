@@ -10,7 +10,7 @@ def home_View(router):
     #* defining view content
 
     content = ft.Container(
-        ft.Text("fwebifbwefbwiefuwen")
+        ft.Text("Home")
             #ft.Row(controls=[
             #ft.ElevatedButton("Go to View 1", on_click=lambda e: viewHandler(videogamesView)),
             #ft.ElevatedButton("Go to View 2", on_click=lambda e: viewHandler(pizzaView)),
