@@ -6,6 +6,6 @@ def games_View(router):
     #* defining view content
     
     content = ft.Column([
-        ft.Text("cmweicnwejcnw")
+        ft.Text("Games")
     ])
     return content
