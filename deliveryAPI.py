@@ -62,8 +62,7 @@ def get_db_connection():
             PizzaID INTEGER NOT NULL PRIMARY KEY,
             crust TEXT,
             size TEXT,
-            sauce TEXT,
-            ingredients TEXT
+            sauce TEXT
         )
     ''')
     
