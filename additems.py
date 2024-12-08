@@ -45,7 +45,7 @@ cursor.execute('''
             name TEXT,
             description TEXT,
             category TEXT,
-            rating INTEGER,
+            rating TEXT,
             image TEXT,
             price NUMERIC,
             stock INTEGER
@@ -62,6 +62,8 @@ cursor.execute('''
 
 conn.commit()
 
+table_now = ''
+
 def main(page: ft.Page):
     you_data = ft.Column()
     preview = ft.Image(visible=False, width=100, height=100, fit="contain") # type: ignore
@@ -77,19 +79,10 @@ def main(page: ft.Page):
 
     def propers(e):
         if table.value == 'Game':
-            txt_description.visible = True
-            categories.visible = True
-            rating.visible = True
-            txt_name.visible = True
-            txt_price.visible = True
-            txt_stock.visible = True
+            txt_description.visible = categories.visible = rating.visible = txt_name.visible = txt_price.visible = txt_stock.visible = True
         else:
-            txt_description.visible = False
-            categories.visible = False
-            rating.visible = False
-            txt_name.visible = True
-            txt_price.visible = True
-            txt_stock.visible = True
+            txt_description.visible = categories.visible = rating.visible = False
+            txt_name.visible = txt_price.visible = txt_stock.visible = True
         page.update()
     
     table = ft.Dropdown(
@@ -152,14 +145,28 @@ def main(page: ft.Page):
 
     rating = ft.Dropdown(
         options=[
-            ft.dropdown.Option(""),
-            ft.dropdown.Option(""),
+            ft.dropdown.Option("E - Everyone"),
+            ft.dropdown.Option("E10+ - Everyone 10 and older"),
+            ft.dropdown.Option("T - Teen"),
+            ft.dropdown.Option("M - Mature 17+"),
+            ft.dropdown.Option("AO - Adults Only 18+"),
+            ft.dropdown.Option("RP - Rating Pending"),
         ],
-        label="Choose a table",
+        label="Choose a rating",
         width=500,
         visible= False
     )
 
+    def check(e):
+        if all([txt_name.value, txt_price.value, txt_stock.value, convertImgToString]):
+            if table.value == 'Game':
+                if all([categories.value, txt_description.value, rating.value]):
+                    save.disabled = False
+            else:
+                save.disabled = False
+        else:
+            save.disabled = True
+        page.update()
 
     def upload_now(e: ft.FilePickerResultEvent):
         nonlocal convertImgToString
@@ -170,27 +177,31 @@ def main(page: ft.Page):
                         convertImgToString = base64.b64encode(image_file.read()).decode()
                         preview.visible = True
                         preview.src_base64=convertImgToString
-                        save.disabled = False
-                        print(convertImgToString)
                 except Exception as e:  # type: ignore
                     print(f"Error: {e}")
+        check(e)
         page.update()
         
     def confirm(e):
         nonlocal convertImgToString
-        cursor.execute("INSERT INTO images (name, img_string, price) VALUES (?, ?, ?)",
-                       (txt_name.value, convertImgToString, txt_price.value))
+
+        if table.value == 'Game':
+            cursor.execute("INSERT INTO Games (name, description, category, rating, image, price, stock) VALUES (?, ?, ?, ?, ?, ?, ?)",
+                        (txt_name.value, txt_description.value, categories.value, rating.value, convertImgToString, txt_price.value, txt_stock.value))
+        else:
+            cursor.execute("INSERT INTO Drinks (name, stock, image, price) VALUES (?, ?, ?, ?)",
+                        (txt_name.value, txt_stock.value, convertImgToString, txt_price.value))
         conn.commit()
-        txt_name.value = ''
-        txt_price.value = ''
-        convertImgToString = ''
+        txt_name.value = txt_description.value = categories.value = rating.value = txt_price.value = convertImgToString = txt_stock.value = ''
         preview.visible = False
         save.disabled = True
+        page.update()
 
 
     file_picker = ft.FilePicker(on_result=upload_now)
     page.overlay.append(file_picker)
 
+    txt_description.on_change = txt_name.on_change = txt_price.on_change = txt_stock.on_change = categories.on_change = rating.on_change = check
     save.on_click = confirm
 
     page.add(
