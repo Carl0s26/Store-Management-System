@@ -45,8 +45,8 @@ def home_View(router):
                         ft.Text("Pizza", size=30, weight="bold"),
                         ft.Image(src_base64=pizza_image, width=200, height=200, fit="contain"),
                     ])),
-                    ft.Container(on_click=lambda _: router.go('/offerts'), content=ft.Column(controls=[
-                        ft.Text("Offerts", size=30, weight="bold"),
+                    ft.Container(on_click=lambda _: router.go('/offers'), content=ft.Column(controls=[
+                        ft.Text("Offers", size=30, weight="bold"),
                         ft.Image(src_base64=offer_image, width=200, height=200, fit="contain"),
                     ])),
                 ])

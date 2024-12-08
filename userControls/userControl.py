@@ -10,7 +10,7 @@ def lowerNavBar(page,ft=ft):
                 ft.IconButton(ft.icons.LOCAL_PIZZA,icon_size = 30, on_click=lambda _: page.go('/pizza')),
                 ft.IconButton(ft.icons.HOME,icon_size = 30, on_click=lambda _: page.go('/')),
                 ft.IconButton(ft.icons.VIDEOGAME_ASSET,icon_size = 30, on_click=lambda _: page.go('/games')),
-                ft.IconButton(ft.icons.DISCOUNT,icon_size = 30, on_click=lambda _: page.go('/offerts'))
+                ft.IconButton(ft.icons.DISCOUNT,icon_size = 30, on_click=lambda _: page.go('/offers'))
             ],
         ),
     )
