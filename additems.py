@@ -53,10 +53,25 @@ cursor.execute('''
     ''')
 cursor.execute('''
         CREATE TABLE IF NOT EXISTS Pizzas (
-            PizzaID INTEGER NOT NULL PRIMARY KEY,
+            PizzaID INTEGER NOT NULL UNIQUE PRIMARY KEY,
             crust TEXT,
             size TEXT,
             sauce TEXT
+        )
+    ''')
+
+cursor.execute('''
+        CREATE TABLE IF NOT EXISTS Ingredients (
+            ingredientID INTEGER NOT NULL UNIQUE PRIMARY KEY,
+            name TEXT,
+            stock TEXT
+        )
+    ''')
+
+cursor.execute('''
+        CREATE TABLE IF NOT EXISTS Customer_Game_Record (
+            PizzaID INTEGER REFERENCES Pizzas(PizzaID),
+            ingredientID INTEGER REFERENCES Ingredients(ingredientID)
         )
     ''')
 

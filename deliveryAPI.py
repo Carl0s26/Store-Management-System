@@ -19,52 +19,67 @@ def get_db_connection():
     ''')
 
     cursor.execute('''
-        CREATE TABLE IF NOT EXISTS Customer_Pizza_Record (
-            PizzaID INTEGER NOT NULL REFERENCES Pizzas(PizzaID),
-            CustomerID INTEGER NOT NULL REFERENCES Customers(customerID)
-        )
-    ''')
+            CREATE TABLE IF NOT EXISTS Customer_Pizza_Record (
+                PizzaID INTEGER NOT NULL REFERENCES Pizzas(PizzaID),
+                CustomerID INTEGER NOT NULL REFERENCES Customers(customerID)
+            )
+        ''')
     cursor.execute('''
-        CREATE TABLE IF NOT EXISTS Customers (
-            customerID INTEGER NOT NULL UNIQUE PRIMARY KEY,
-            firstName TEXT,
-            lastName TEXT,
-            email TEXT,
-            phone TEXT,
-            address TEXT,
-            birthdate TEXT,
-            subscription TEXT
-        )
-    ''')
+            CREATE TABLE IF NOT EXISTS Customers (
+                customerID INTEGER NOT NULL UNIQUE PRIMARY KEY,
+                firstName TEXT,
+                lastName TEXT,
+                email TEXT,
+                phone TEXT,
+                address TEXT,
+                birthdate TEXT,
+                subscription TEXT
+            )
+        ''')
     cursor.execute('''
-        CREATE TABLE IF NOT EXISTS Drinks (
-            drinkID INTEGER NOT NULL PRIMARY KEY,
-            name TEXT,
-            stock INTEGER,
-            image TEXT,
-            price NUMERIC
-        )
-    ''')
+            CREATE TABLE IF NOT EXISTS Drinks (
+                drinkID INTEGER NOT NULL PRIMARY KEY,
+                name TEXT,
+                stock INTEGER,
+                image TEXT,
+                price NUMERIC
+            )
+        ''')
     cursor.execute('''
-        CREATE TABLE IF NOT EXISTS Games (
-            gameID INTEGER NOT NULL PRIMARY KEY,
-            name TEXT,
-            description TEXT,
-            category TEXT,
-            rating TEXT,
-            image TEXT,
-            price NUMERIC,
-            stock INTEGER
-        )
-    ''')
+            CREATE TABLE IF NOT EXISTS Games (
+                gameID INTEGER NOT NULL PRIMARY KEY,
+                name TEXT,
+                description TEXT,
+                category TEXT,
+                rating TEXT,
+                image TEXT,
+                price NUMERIC,
+                stock INTEGER
+            )
+        ''')
     cursor.execute('''
-        CREATE TABLE IF NOT EXISTS Pizzas (
-            PizzaID INTEGER NOT NULL PRIMARY KEY,
-            crust TEXT,
-            size TEXT,
-            sauce TEXT
-        )
-    ''')
+            CREATE TABLE IF NOT EXISTS Pizzas (
+                PizzaID INTEGER NOT NULL UNIQUE PRIMARY KEY,
+                crust TEXT,
+                size TEXT,
+                sauce TEXT
+            )
+        ''')
+
+    cursor.execute('''
+            CREATE TABLE IF NOT EXISTS Ingredients (
+                ingredientID INTEGER NOT NULL UNIQUE PRIMARY KEY,
+                name TEXT,
+                stock TEXT
+            )
+        ''')
+
+    cursor.execute('''
+            CREATE TABLE IF NOT EXISTS Customer_Game_Record (
+                PizzaID INTEGER REFERENCES Pizzas(PizzaID),
+                ingredientID INTEGER REFERENCES Ingredients(ingredientID)
+            )
+        ''')
     
     conn.commit()
     return conn
