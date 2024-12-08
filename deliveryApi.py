@@ -51,7 +51,7 @@ def get_db_connection():
             name TEXT,
             description TEXT,
             category TEXT,
-            rating INTEGER,
+            rating TEXT,
             image TEXT,
             price NUMERIC,
             stock INTEGER
