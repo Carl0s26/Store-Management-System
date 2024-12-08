@@ -43,21 +43,21 @@ def pizza_View(router):
                 alignment=ft.MainAxisAlignment.SPACE_EVENLY,
                 controls=[
                 ft.Dropdown( 
-                width= 130,
+                width= 140,
                 options=[
                         ft.dropdown.Option("Small"),
                         ft.dropdown.Option("Medium"),
                         ft.dropdown.Option("Big"),
                 ]),
                 ft.Dropdown(
-                width=130,
+                width=140,
                 options=[
                         ft.dropdown.Option("Thin Crust"),
                         ft.dropdown.Option("Thick Crust"),
                         ft.dropdown.Option("Stuffed Crust"),
                 ]),
                 ft.Dropdown(
-                width=130,
+                width=140,
                 options=[
                         ft.dropdown.Option("Red Sauce"),
                         ft.dropdown.Option("White Sauce"),

@@ -7,7 +7,7 @@ from userControls.userControl import upperNavBar
 
 def main(page: ft.Page):
     router = Router(page, ft)
-    page.title = 'Amason'
+    page.title = 'Shop name'
     page.window.width = 600
     page.window.height = 800
     page.bgcolor = '#808080'

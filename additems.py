@@ -171,6 +171,7 @@ def main(page: ft.Page):
                         preview.visible = True
                         preview.src_base64=convertImgToString
                         save.disabled = False
+                        print(convertImgToString)
                 except Exception as e:  # type: ignore
                     print(f"Error: {e}")
         page.update()
