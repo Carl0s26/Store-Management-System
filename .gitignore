@@ -1,0 +1,5 @@
+
+/__pycache__
+*.pyc
+/views/__pycache__
+/userControls/__pycache__
