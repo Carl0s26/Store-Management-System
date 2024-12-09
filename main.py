@@ -1,6 +1,6 @@
 import flet as ft
 import threading
-# from deliveryApi import run_api
+from deliveryApi import run_api
 from views.routes import Router
 from userControls.userControl import lowerNavBar
 from userControls.userControl import upperNavBar
@@ -21,8 +21,8 @@ def main(page: ft.Page):
     )
     page.go('/')
     
-    # api_thread = threading.Thread(target=run_api, daemon=True)
-    # api_thread.start()
+    api_thread = threading.Thread(target=run_api, daemon=True)
+    api_thread.start()
     
 
 ft.app(target=main, assets_dir="assets")
