@@ -21,7 +21,7 @@ def cart_View(router):
                 ft.DataRow(
                     cells=[
                         ft.DataCell(ft.Text("Pizza")),
-                        ft.DataCell(ft.Dropdown(hint_text="view",text_size=10,options=[ft.dropdown.Option("ingredient 1"),ft.dropdown.Option("Ingredient 2"),ft.dropdown.Option("ingredient 3"),],)), # make dropdown
+                        ft.DataCell(ft.Container(content=ft.Dropdown(hint_text="view",text_size=10,options=[ft.dropdown.Option("ingredient 1"),ft.dropdown.Option("Ingredient 2"),ft.dropdown.Option("ingredient 3"),],),expand=True)), # make dropdown
                         ft.DataCell(ft.Text("1")),
                         ft.DataCell(ft.Text("43")),
                         ft.DataCell(ft.Text("50")),
@@ -51,6 +51,8 @@ def cart_View(router):
     #todo mostrar direccion del cliente
 
     #todo mostrar numero de telefono
+
+    #todo boton para quitar items
 
     #todo boton para pagar que te vacie el carrito y confirme que todo fue bien
 

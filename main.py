@@ -5,6 +5,12 @@ from views.routes import Router
 from userControls.userControl import lowerNavBar
 from userControls.userControl import upperNavBar
 
+
+# def volumeChange(e):
+#     print(e.control.value)
+#     pass
+#     # change volume
+
 def main(page: ft.Page):
     router = Router(page, ft)
     page.title = 'Shop name'

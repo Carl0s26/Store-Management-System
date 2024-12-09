@@ -88,7 +88,6 @@ def pizza_View(router):
                 ft.CupertinoCheckbox(label="Anchovies", value=False, data="Anchovies",on_change=addIngredient),
                 ft.CupertinoCheckbox(label="Sun-Dried Tomatoes", value=False, data="Sun-Dried Tomatoes",on_change=addIngredient),
                 ft.CupertinoCheckbox(label="Roasted Garlic", value=False, data="Roasted Garlic",on_change=addIngredient),
-
             ]),
         ]),
     

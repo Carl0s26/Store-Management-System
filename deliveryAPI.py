@@ -502,5 +502,7 @@ async def delete_ingredient(ingredientID: int):
 
 #! uvicorn "Store-Management-System.deliveryApi:app" --reload
 
+#! uvicorn deliveryApi:app --reload 
+
 def run_api():
     uvicorn.run(app, host="127.0.0.1", port=8000)
