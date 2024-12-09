@@ -18,6 +18,7 @@ def main(page: ft.Page):
     page.window.height = 800
     page.bgcolor = '#808080'
     page.scroll = True
+    page.window_resizable = False
     page.appbar = upperNavBar(page)
     page.bottom_appbar = lowerNavBar(page)
     page.on_route_change = router.route_change
