@@ -2,84 +2,7 @@ import flet as ft
 import sqlite3
 import base64
 
-conn = sqlite3.connect("delivery.db", check_same_thread=False)
-cursor = conn.cursor()
-
-cursor.execute('''
-        CREATE TABLE IF NOT EXISTS Customer_Game_Record (
-            GameID INTEGER NOT NULL REFERENCES Games(gameID),
-            CustomerID INTEGER NOT NULL REFERENCES Customers(customerID)
-        )
-    ''')
-
-cursor.execute('''
-        CREATE TABLE IF NOT EXISTS Customer_Pizza_Record (
-            PizzaID INTEGER NOT NULL REFERENCES Pizzas(PizzaID),
-            CustomerID INTEGER NOT NULL REFERENCES Customers(customerID)
-        )
-    ''')
-cursor.execute('''
-        CREATE TABLE IF NOT EXISTS Customers (
-            customerID INTEGER NOT NULL UNIQUE PRIMARY KEY,
-            firstName TEXT,
-            lastName TEXT,
-            email TEXT,
-            phone TEXT,
-            address TEXT,
-            birthdate TEXT,
-            subscription TEXT
-        )
-    ''')
-cursor.execute('''
-        CREATE TABLE IF NOT EXISTS Drinks (
-            drinkID INTEGER NOT NULL PRIMARY KEY,
-            name TEXT,
-            stock INTEGER,
-            image TEXT,
-            price NUMERIC
-        )
-    ''')
-cursor.execute('''
-        CREATE TABLE IF NOT EXISTS Games (
-            gameID INTEGER NOT NULL PRIMARY KEY,
-            name TEXT,
-            description TEXT,
-            category TEXT,
-            rating TEXT,
-            image TEXT,
-            price NUMERIC,
-            stock INTEGER
-        )
-    ''')
-cursor.execute('''
-        CREATE TABLE IF NOT EXISTS Pizzas (
-            PizzaID INTEGER NOT NULL UNIQUE PRIMARY KEY,
-            crust TEXT,
-            size TEXT,
-            sauce TEXT
-        )
-    ''')
-
-cursor.execute('''
-        CREATE TABLE IF NOT EXISTS Ingredients (
-            ingredientID INTEGER NOT NULL UNIQUE PRIMARY KEY,
-            name TEXT,
-            stock TEXT
-        )
-    ''')
-
-cursor.execute('''
-        CREATE TABLE IF NOT EXISTS Customer_Game_Record (
-            PizzaID INTEGER REFERENCES Pizzas(PizzaID),
-            ingredientID INTEGER REFERENCES Ingredients(ingredientID)
-        )
-    ''')
-
-conn.commit()
-
-table_now = ''
-
-def main(page: ft.Page):
+def add_View(router):
     you_data = ft.Column()
     preview = ft.Image(visible=False, width=100, height=100, fit="contain") # type: ignore
     txt_name = ft.TextField(label="Item name:", width=500, visible= False)
@@ -88,18 +11,18 @@ def main(page: ft.Page):
     txt_description = ft.TextField(label="Description:", width=500, visible= False)
     save = ft.ElevatedButton("Save", icon=ft.icons.SAVE, disabled=True)
     convertImgToString = ''
-    page.title = 'Data Adder'
-    page.window.width = 900
-    page.window.height = 900
+    conn = sqlite3.connect("delivery.db", check_same_thread=False)
+    cursor = conn.cursor()
 
     def propers(e):
+        nonlocal convertImgToString
         if table.value == 'Game':
             txt_description.visible = categories.visible = rating.visible = txt_name.visible = txt_price.visible = txt_stock.visible = True
         else:
             txt_description.visible = categories.visible = rating.visible = False
             txt_name.visible = txt_price.visible = txt_stock.visible = True
-        page.update()
-    
+        router.update()
+        
     table = ft.Dropdown(
         options=[
             ft.dropdown.Option("Drink"),
@@ -172,7 +95,9 @@ def main(page: ft.Page):
         visible= False
     )
 
+
     def check(e):
+        nonlocal convertImgToString
         if all([txt_name.value, txt_price.value, txt_stock.value, convertImgToString]):
             if table.value == 'Game':
                 if all([categories.value, txt_description.value, rating.value]):
@@ -181,7 +106,8 @@ def main(page: ft.Page):
                 save.disabled = False
         else:
             save.disabled = True
-        page.update()
+        router.update()
+
 
     def upload_now(e: ft.FilePickerResultEvent):
         nonlocal convertImgToString
@@ -195,11 +121,10 @@ def main(page: ft.Page):
                 except Exception as e:  # type: ignore
                     print(f"Error: {e}")
         check(e)
-        page.update()
-        
+        router.update()
+            
     def confirm(e):
         nonlocal convertImgToString
-
         if table.value == 'Game':
             cursor.execute("INSERT INTO Games (name, description, category, rating, image, price, stock) VALUES (?, ?, ?, ?, ?, ?, ?)",
                         (txt_name.value, txt_description.value, categories.value, rating.value, convertImgToString, txt_price.value, txt_stock.value))
@@ -207,34 +132,31 @@ def main(page: ft.Page):
             cursor.execute("INSERT INTO Drinks (name, stock, image, price) VALUES (?, ?, ?, ?)",
                         (txt_name.value, txt_stock.value, convertImgToString, txt_price.value))
         conn.commit()
-        txt_name.value = txt_description.value = categories.value = rating.value = txt_price.value = convertImgToString = txt_stock.value = ''
+        table.value = txt_name.value = txt_description.value = categories.value = rating.value = txt_price.value = convertImgToString = txt_stock.value = ''
         preview.visible = False
         save.disabled = True
-        page.update()
-
+        router.update()
 
     file_picker = ft.FilePicker(on_result=upload_now)
-    page.overlay.append(file_picker)
 
     txt_description.on_change = txt_name.on_change = txt_price.on_change = txt_stock.on_change = categories.on_change = rating.on_change = check
     save.on_click = confirm
 
-    page.add(
-        ft.Column([
-            ft.Text("Item Stocker", size=30),
-            table,
-            txt_name,
-            txt_stock,
-            txt_description,
-            categories,
-            rating,
-            txt_price,
-            ft.Row([ft.FilledButton("Upload Image",icon=ft.icons.FILE_UPLOAD_OUTLINED, on_click=lambda e: file_picker.pick_files()), 
-                    save,
-                    preview,
-                    ]),
-            you_data,
-        ])
-    )
-
-ft.app(target=main)
+    content = ft.Column([
+        ft.Text("Item Stocker", size=30),
+        table,
+        txt_name,
+        txt_stock,
+        txt_description,
+        categories,
+        rating,
+        txt_price,
+        ft.Row([ft.FilledButton("Upload Image",icon=ft.icons.FILE_UPLOAD_OUTLINED, on_click=lambda e: file_picker.pick_files()), 
+            save,
+            preview,
+            ]),
+        you_data,
+        file_picker,
+    ])
+    
+    return content

@@ -22,23 +22,23 @@ def games_View(router):
                 ft.Row(spacing=40,alignment=ft.MainAxisAlignment.SPACE_AROUND,controls=[
                     ft.Container(height=500,width=250,border=ft.border.all(1,ft.colors.WHITE),alignment=ft.alignment.center,bgcolor=ft.colors.RED_300,content= # creating the game container with game data
                         ft.Column(alignment=ft.MainAxisAlignment.CENTER,horizontal_alignment=ft.CrossAxisAlignment.CENTER, controls=[
-                            ft.Text(text_align=ft.TextAlign.CENTER,value=data["name"]),
+                            ft.Text(text_align=ft.TextAlign.CENTER,value=data["name"],weight="bold",),
                             ft.Image(width=200, height=200, src_base64= data["image"]),
-                            ft.Text(text_align=ft.TextAlign.CENTER,size=10, value= "Description: " + data["description"]),
-                            ft.Text("Category: " + data["category"]),
-                            ft.Text("Rating: " + data["rating"]),
-                            ft.Text("price: " + str(data["price"])),
+                            ft.Text(text_align=ft.TextAlign.CENTER,size=10, value= data["description"]),
+                            ft.Text(data["category"],weight="bold",),
+                            ft.Text(data["rating"]),
+                            ft.Text("$" + str("{:.2f}".format(data["price"]))),
                             ft.FilledButton(data=data,text="Add to cart",on_click=gameToCart)
                         ])         
                     ),
                     ft.Container(height=500,width=250,border=ft.border.all(1,ft.colors.WHITE),alignment=ft.alignment.center,bgcolor=ft.colors.RED_300,content= # creating the game container with game data
                         ft.Column(alignment=ft.MainAxisAlignment.CENTER,horizontal_alignment=ft.CrossAxisAlignment.CENTER, controls=[
-                            ft.Text(text_align=ft.TextAlign.CENTER,value=response.json()[i+1]["name"]),
+                            ft.Text(text_align=ft.TextAlign.CENTER,value=response.json()[i+1]["name"],weight="bold",),
                             ft.Image(width=200, height=200, src_base64= response.json()[i+1]["image"]),
-                            ft.Text(text_align=ft.TextAlign.CENTER,size=10, value= "Description: " + response.json()[i+1]["description"]),
-                            ft.Text("Category: " + response.json()[i+1]["category"]),
-                            ft.Text("Rating: " + response.json()[i+1]["rating"]),
-                            ft.Text("price: " + str(response.json()[i+1]["price"])),
+                            ft.Text(text_align=ft.TextAlign.CENTER,size=10, value= response.json()[i+1]["description"]),
+                            ft.Text(response.json()[i+1]["category"],weight="bold",),
+                            ft.Text(response.json()[i+1]["rating"]),
+                            ft.Text("$" + str("{:.2f}".format(response.json()[i+1]["price"]))),
                             ft.FilledButton(data=response.json()[i+1],text="Add to cart",on_click=gameToCart)
                         ])         
                     )
@@ -49,12 +49,12 @@ def games_View(router):
                 ft.Row(spacing=40,alignment=ft.MainAxisAlignment.SPACE_AROUND,controls=[
                     ft.Container(height=500,width=250,border=ft.border.all(1,ft.colors.WHITE),alignment=ft.alignment.center,bgcolor=ft.colors.RED_300,content= # creating the game container with game data
                         ft.Column(alignment=ft.MainAxisAlignment.CENTER,horizontal_alignment=ft.CrossAxisAlignment.CENTER, controls=[
-                            ft.Text(text_align=ft.TextAlign.CENTER,value=data["name"]),
+                            ft.Text(text_align=ft.TextAlign.CENTER,value=data["name"],weight="bold",),
                             ft.Image(width=200, height=200, src_base64= data["image"]),
-                            ft.Text(text_align=ft.TextAlign.CENTER,size=10, value= "Description: " + data["description"]),
-                            ft.Text("Category: " + data["category"]),
-                            ft.Text("Rating: " + data["rating"]),
-                            ft.Text("price: " + str(data["price"])),
+                            ft.Text(text_align=ft.TextAlign.CENTER,size=10, value= data["description"]),
+                            ft.Text(data["category"],weight="bold",),
+                            ft.Text(data["rating"]),
+                            ft.Text("$" + str("{:.2f}".format(data["price"]))),
                             ft.FilledButton(data=data,text="Add to cart",on_click=gameToCart)
                         ])         
                     )

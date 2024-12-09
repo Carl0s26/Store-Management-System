@@ -18,8 +18,14 @@ def lowerNavBar(page,ft=ft):
 
 def upperNavBar(page,ft=ft):
     NavBar = ft.AppBar(
-        leading=ft.IconButton(ft.icons.SETTINGS, on_click=lambda _: page.go('/settings')),
-        leading_width=40,
+        leading=ft.Row(
+            controls=[
+                ft.IconButton(ft.icons.ADD, icon_size=30, on_click=lambda _: page.go('/add')),
+                ft.IconButton(ft.icons.SETTINGS, icon_size=30, on_click=lambda _: page.go('/settings')),
+            ],
+            spacing=0,
+        ),
+        leading_width=80,
         title=ft.Text("Shop Name",size=30),
         center_title=True,
         bgcolor=ft.colors.SURFACE_VARIANT,

@@ -10,6 +10,7 @@ from views.offersView import offers_View
 from views.profileView import profile_View
 from views.cartView import cart_View
 from views.settingsView import settings_View
+from views.addView import add_View
 
 class Router:
     def __init__(self, page, ft):
@@ -24,6 +25,7 @@ class Router:
             "/profile" : profile_View(page),
             "/settings" : settings_View(page),
             "/cart" : cart_View(page),
+            "/add" : add_View(page),
         }
         self.body = ft.Container(content=self.routes['/'])
 
