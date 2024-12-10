@@ -12,11 +12,12 @@ class Pizza:
         self.crust = crust
         self.ingredients = ingredients
 
-def createPizza(router): # adds the pizza to the lists
+def createPizza(e,feedbackBar,router): # adds the pizza to the lists
     print("Arrived here")
     pizzasList.append(Pizza(size=size,crust=crust,ingredients=ingredients))
     print(pizzasList)
-    router.go('/')
+    feedbackBar.open = True
+    router.update()
 
 def addIngredient(e): # customizes pizza
     if e.control.value:
@@ -25,12 +26,14 @@ def addIngredient(e): # customizes pizza
         ingredients.remove(e.control.data)
     print(f'ingredients: {ingredients}')
 
-    #todo search how to make the checks work.
+
+
     #* Maybe create a list of pizza objects to store the pizza info.
 
 def pizza_View(router):
     #* defining view content
-
+    feedbackBar = ft.SnackBar(content =ft.Text("Item successfully to your cart",size=20),bgcolor=ft.colors.GREY_300)
+    router.overlay.append(feedbackBar)
     content = ft.Column([
         ft.Row(
                 alignment=ft.MainAxisAlignment.SPACE_EVENLY,
@@ -91,7 +94,7 @@ def pizza_View(router):
             ]),
         ]),
     
-    ft.Row(controls=[ft.ElevatedButton(text="Add Pizza",on_click=lambda e: createPizza(router))], alignment= ft.MainAxisAlignment.CENTER)
+    ft.Row(controls=[ft.ElevatedButton(text="Add Pizza",on_click=lambda e: createPizza(e,feedbackBar,router))], alignment= ft.MainAxisAlignment.CENTER)
     
     ],
     )

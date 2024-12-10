@@ -7,17 +7,19 @@ gamesBought = []
 def getGames(e):
     pass
 
-def gameToCart(e):
+def gameToCart(e,feedbackBar,router):
     gamesBought.append(e.control.data)
-
+    feedbackBar.open = True
+    router.update()
 
 def games_View(router):
-    #* defining view content
+    feedbackBar = ft.SnackBar(content =ft.Text("Item successfully to your cart",size=20),bgcolor=ft.colors.GREY_300)
+    router.overlay.append(feedbackBar)
     gameRows = []
     response = requests.get("http://127.0.0.1:8000/games/")
-    for i in range(0,len(response.json()),2): # looping trhought all the games
+    for i in range(0,len(response.json()),2):
         data = response.json()[i]
-        if i + 1 < len(response.json()): # if last element
+        if i + 1 < len(response.json()):
             gameRows.append( 
                 ft.Row(spacing=40,alignment=ft.MainAxisAlignment.SPACE_AROUND,controls=[
                     ft.Container(height=500,width=250,border=ft.border.all(1,ft.colors.WHITE),alignment=ft.alignment.center,bgcolor=ft.colors.RED_300,content= # creating the game container with game data
@@ -28,7 +30,7 @@ def games_View(router):
                             ft.Text(data["category"],weight="bold",),
                             ft.Text(data["rating"]),
                             ft.Text("$" + str("{:.2f}".format(data["price"]))),
-                            ft.FilledButton(data=data,text="Add to cart",on_click=gameToCart)
+                            ft.FilledButton(data=data,text="Add to cart",on_click=lambda e: gameToCart(e,feedbackBar,router))
                         ])         
                     ),
                     ft.Container(height=500,width=250,border=ft.border.all(1,ft.colors.WHITE),alignment=ft.alignment.center,bgcolor=ft.colors.RED_300,content= # creating the game container with game data
@@ -39,7 +41,7 @@ def games_View(router):
                             ft.Text(response.json()[i+1]["category"],weight="bold",),
                             ft.Text(response.json()[i+1]["rating"]),
                             ft.Text("$" + str("{:.2f}".format(response.json()[i+1]["price"]))),
-                            ft.FilledButton(data=response.json()[i+1],text="Add to cart",on_click=gameToCart)
+                            ft.FilledButton(data=response.json()[i+1],text="Add to cart",on_click=lambda e: gameToCart(e,feedbackBar,router))
                         ])         
                     )
                 ])   
@@ -55,7 +57,7 @@ def games_View(router):
                             ft.Text(data["category"],weight="bold",),
                             ft.Text(data["rating"]),
                             ft.Text("$" + str("{:.2f}".format(data["price"]))),
-                            ft.FilledButton(data=data,text="Add to cart",on_click=gameToCart)
+                            ft.FilledButton(data=data,text="Add to cart",on_click=lambda e: gameToCart(e,feedbackBar,router))
                         ])         
                     )
                 ])
