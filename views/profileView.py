@@ -8,10 +8,15 @@ import flet as ft
 
 def profile_View(router):
     #* defining view content
+    
     content = ft.Column([
-        ft.Text("Profile Name: "),
-        ft.Text("Profile Name: "),
-        ft.Text("Profile Name: "),
+        ft.Text("Sign Up",size=30),
+        ft.Text("Username or email: "),
+        ft.IconButton(ft.icons.SHOPPING_CART,icon_size = 30, on_click=lambda _: page.go('/cart')),
+        ft.Text("Password: "),
+        ft.IconButton(ft.icons.PERSON_ADD_ALT_ROUNDED,icon_size = 30, on_click=lambda _: page.go('/profile')),
+        ft.Text("New to shop?: "),
+        ft.Text("Create an Account (This is a button): "),
 
     ])
     return content

@@ -35,6 +35,7 @@ def pizza_View(router):
     feedbackBar = ft.SnackBar(content =ft.Text("Item successfully to your cart",size=20),bgcolor=ft.colors.GREY_300)
     router.overlay.append(feedbackBar)
     content = ft.Column([
+        ft.Text("Make Your Own Pizza", size=40, weight = "bold"),
         ft.Row(
                 alignment=ft.MainAxisAlignment.SPACE_EVENLY,
                 controls =[
@@ -51,14 +52,14 @@ def pizza_View(router):
                         ft.dropdown.Option("Small"),
                         ft.dropdown.Option("Medium"),
                         ft.dropdown.Option("Big"),
-                ]),
+                ],bgcolor="green"),
                 ft.Dropdown(
                 width=140,
                 options=[
                         ft.dropdown.Option("Thin Crust"),
                         ft.dropdown.Option("Thick Crust"),
                         ft.dropdown.Option("Stuffed Crust"),
-                ]),
+                ],bgcolor="white"),
                 ft.Dropdown(
                 width=140,
                 options=[
@@ -66,7 +67,7 @@ def pizza_View(router):
                         ft.dropdown.Option("White Sauce"),
                         ft.dropdown.Option("Pesto Sauce"),
                         ft.dropdown.Option("BBQ Sauce"),
-                ]),
+                ],bgcolor="red"),
         ]),
         ft.Row(controls=[ft.Text("Ingredients",size=30)],alignment=ft.MainAxisAlignment.CENTER),
         ft.Row(alignment=ft.MainAxisAlignment.SPACE_AROUND,controls=[
@@ -96,6 +97,6 @@ def pizza_View(router):
     
     ft.Row(controls=[ft.ElevatedButton(text="Add Pizza",on_click=lambda e: createPizza(e,feedbackBar,router))], alignment= ft.MainAxisAlignment.CENTER)
     
-    ],
+    ],alignment=ft.MainAxisAlignment.CENTER, horizontal_alignment=ft.CrossAxisAlignment.CENTER,
     )
     return content

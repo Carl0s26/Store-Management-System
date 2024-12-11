@@ -13,7 +13,7 @@ def gameToCart(e,feedbackBar,router):
     router.update()
 
 def games_View(router):
-    feedbackBar = ft.SnackBar(content =ft.Text("Item successfully to your cart",size=20),bgcolor=ft.colors.GREY_300)
+    feedbackBar = ft.SnackBar(content =ft.Text("Item successfully to your cart",size=20),bgcolor=ft.colors.BLACK)
     router.overlay.append(feedbackBar)
     gameRows = []
     response = requests.get("http://127.0.0.1:8000/games/")
@@ -70,7 +70,7 @@ def games_View(router):
 
 
     content = ft.Column(horizontal_alignment=ft.CrossAxisAlignment.CENTER,alignment= ft.MainAxisAlignment.CENTER,controls=[
-        ft.Text("Games",size=40),
+        ft.Text("Games",size=40, weight="bold"),
         gamesDisplayColumn,
         ft.CupertinoButton(text="Games Shop",on_click=getGames),
     ])

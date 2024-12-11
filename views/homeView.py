@@ -22,34 +22,38 @@ def home_View(router):
     cursor.execute("SELECT image FROM data WHERE name = ?", ("pizza",))
     pizza_image = cursor.fetchone()["image"]
 
-    cursor.execute("SELECT image FROM data WHERE name = ?", ("offer",))
+    cursor.execute("SELECT image FROM data WHERE name = ?", ("unavailable_offer",))
     offer_image = cursor.fetchone()["image"]
 
     conn.close()
 
     content = ft.Container(
         content=ft.Column(spacing=25,controls=[
-            ft.Row(controls=[ft.Text("Home/shop name/slogan", size=35, weight="bold")],alignment=ft.MainAxisAlignment.CENTER),
+            ft.Row(controls=[ft.Text("Home", size=35, weight="bold")],alignment=ft.MainAxisAlignment.CENTER),
             ft.Row(alignment=ft.MainAxisAlignment.SPACE_AROUND,controls=[
                 ft.Column(spacing=30,controls=[
                     ft.Container(on_click=lambda _: router.go('/drinks'), content=ft.Column(controls=[
                         ft.Text("Drinks", size=30, weight="bold"),
                          ft.Image(src_base64=drink_image, width=200, height=200, fit="contain"),
-                    ])),
+                ],alignment=ft.MainAxisAlignment.CENTER, 
+                horizontal_alignment=ft.CrossAxisAlignment.CENTER)),
                     ft.Container(on_click=lambda _: router.go('/games'), content=ft.Column(controls=[
                         ft.Text("Games", size=30, weight="bold"),
                          ft.Image(src_base64=game_image, width=200, height=200, fit="contain"),
-                    ])),
+                    ], alignment=ft.MainAxisAlignment.CENTER, 
+                horizontal_alignment=ft.CrossAxisAlignment.CENTER)),
                 ]),
                 ft.Column(spacing=30,controls=[
                     ft.Container(on_click=lambda _: router.go('/pizza'), content=ft.Column(controls=[
                         ft.Text("Pizza", size=30, weight="bold"),
                          ft.Image(src_base64=pizza_image, width=200, height=200, fit="contain"),
-                    ])),
-                    ft.Container(on_click=lambda _: router.go('/offers'), content=ft.Column(controls=[
+                    ], alignment=ft.MainAxisAlignment.CENTER, 
+                horizontal_alignment=ft.CrossAxisAlignment.CENTER)),
+                    ft.Container(on_click=lambda _: router.go('/offers'),disabled=True, content=ft.Column(controls=[
                         ft.Text("Offers", size=30, weight="bold"),
                          ft.Image(src_base64=offer_image, width=200, height=200, fit="contain"),
-                    ])),
+                    ], alignment=ft.MainAxisAlignment.CENTER, 
+                horizontal_alignment=ft.CrossAxisAlignment.CENTER)),
                 ])
             ])
             

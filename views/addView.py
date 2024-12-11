@@ -118,6 +118,7 @@ def add_View(router):
                         convertImgToString = base64.b64encode(image_file.read()).decode()
                         preview.visible = True
                         preview.src_base64=convertImgToString
+                        print(convertImgToString)
                 except Exception as e:  # type: ignore
                     print(f"Error: {e}")
         check(e)

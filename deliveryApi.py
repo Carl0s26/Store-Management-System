@@ -75,7 +75,7 @@ def get_db_connection():
         ''')
 
     cursor.execute('''
-            CREATE TABLE IF NOT EXISTS Customer_Game_Record (
+            CREATE TABLE IF NOT EXISTS Pizza_Ingredients (
                 PizzaID INTEGER REFERENCES Pizzas(PizzaID),
                 ingredientID INTEGER REFERENCES Ingredients(ingredientID)
             )
@@ -123,7 +123,7 @@ async def get_games(gameID: int = Query(None, description="ID of the game to sea
     conn = get_db_connection()
     cursor = conn.cursor()
     if gameID:
-        cursor.execute("SELECT * FROM Games WHERE id = ?", (gameID,))
+        cursor.execute("SELECT * FROM Games WHERE gameID = ?", (gameID,))
     else:
         cursor.execute("SELECT * FROM Games")
     
@@ -504,3 +504,4 @@ async def delete_ingredient(ingredientID: int):
 
 def run_api():
     uvicorn.run(app, host="127.0.0.1", port=8000)
+
