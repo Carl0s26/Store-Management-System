@@ -7,7 +7,7 @@ if platform.system() == "Darwin":
 
 import flet as ft
 import threading
-from deliveryApi import run_api
+from deliveryAPI import run_api
 from views.routes import Router
 from userControls.userControl import lowerNavBar, upperNavBar
 
