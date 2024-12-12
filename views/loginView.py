@@ -39,7 +39,6 @@ def login_View(router):
             user = validate_user(email, password)
             if user:
                 current_id = int(user[0])
-                message.value("")
                 router.go("/")
             else:
                 message.value = "Invalid email or password."
