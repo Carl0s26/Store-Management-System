@@ -11,6 +11,8 @@ from deliveryApi import run_api
 from views.routes import Router
 from userControls.userControl import lowerNavBar, upperNavBar
 
+from views.loginView import profile_View
+
 api_thread = threading.Thread(target=run_api, daemon=True)
 api_thread.start()
 
@@ -30,6 +32,25 @@ def main(page: ft.Page):
     page.add(
         router.body,
     )
-    page.go('/')
+
+    def on_route_change(route):
+        if page.route == "/login" or page.route == "/signUp":
+            page.appbar = None
+            page.bottom_appbar = None
+        else:
+            page.appbar = upperNavBar(page)
+            page.bottom_appbar = lowerNavBar(page)
+        
+        if page.route == "/" or page.route == "/profile":
+            id_content = profile_View(router)
+            router.body.content = (id_content)
+        
+        router.route_change(route)
+        page.update()
+
+    page.on_route_change = on_route_change
+    router.page = page
+    
+    page.go('/login')
 
 ft.app(target=main, assets_dir="assets")

@@ -22,7 +22,7 @@ def upperNavBar(page,ft=ft):
         leading=ft.Row(
             controls=[
                 ft.IconButton(ft.icons.ADD, icon_size=30, on_click=lambda _: page.go('/add'), icon_color="black"),
-                ft.IconButton(ft.icons.SETTINGS, icon_size=30, on_click=lambda _: page.go('/settings'), icon_color="black"),
+                ft.IconButton(ft.icons.SETTINGS, icon_size=30, on_click=lambda _: (page.go('/settings'), page.update()), icon_color="black"),
             ],
             spacing=0,
         ),
@@ -32,7 +32,7 @@ def upperNavBar(page,ft=ft):
         bgcolor= '#67e0ba',
         actions=[
             ft.IconButton(ft.icons.SHOPPING_CART,icon_size = 30, on_click=lambda _: page.go('/cart'),icon_color="black"),
-            ft.IconButton(ft.icons.PERSON_ADD_ALT_ROUNDED,icon_size = 30, on_click=lambda _: page.go('/profile'), icon_color="black"),
+            ft.IconButton(ft.icons.PERSON,icon_size = 30, on_click=lambda _: page.go('/profile'), icon_color="black"),
         ]
     )
     return NavBar

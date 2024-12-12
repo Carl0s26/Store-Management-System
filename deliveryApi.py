@@ -33,7 +33,8 @@ def get_db_connection():
                 phone TEXT,
                 address TEXT,
                 birthdate TEXT,
-                subscription TEXT
+                subscription TEXT,
+                password TEXT
             )
         ''')
     cursor.execute('''
