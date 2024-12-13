@@ -17,7 +17,6 @@ def settings_View(router):
         ft.Column([
             ft.Text("Contact info: 809-214-8977", size=30),
             ft.Text("operational hours: 7am - 10pm", size=30),
-            ft.Text("Clear Cart", size=30),
             ft.TextField(
                 label="Delivery Instruction",
                 multiline=True,

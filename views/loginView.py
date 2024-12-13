@@ -1,5 +1,6 @@
 import flet as ft
 import requests
+import sqlite3
 
 current_id = int()
 
@@ -15,6 +16,16 @@ def validate_user(email, password):
     return None
 
 def login_View(router):
+    conn = sqlite3.connect("delivery.db")
+    conn.row_factory = sqlite3.Row  
+    cursor = conn.cursor()
+
+    cursor.execute("SELECT image FROM data WHERE name = ?", ("logo",))
+    logo_image = cursor.fetchone()["image"]
+
+
+    conn.close()
+
     global current_id
 
     show_password = False
@@ -59,8 +70,14 @@ def login_View(router):
     content = ft.Column(
         controls=[
             ft.Container(
-                content=ft.Text("Game & Slice", size=50, weight="bold"),
-                padding=ft.padding.only(top=60, bottom=50),
+                content=ft.Column(
+                    controls=[
+                        ft.Image(src_base64=logo_image, width=200, height=200, fit="contain"),
+                        ft.Text("Game & Slice", size=50, weight="bold"), 
+                    ],alignment=ft.MainAxisAlignment.CENTER,
+                    horizontal_alignment=ft.CrossAxisAlignment.CENTER,
+                ),
+                padding=ft.padding.only(top=30, bottom=50),
             ),
             ft.Text("Login", size=30),
             email_field,
