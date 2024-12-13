@@ -60,7 +60,7 @@ def addIngredient(e): # customizes pizza
 
 def pizza_View(router):
     #* defining view content
-    feedbackBar = ft.SnackBar(content =ft.Text("Item successfully to your cart",size=20),bgcolor=ft.colors.GREY_300)
+    feedbackBar = ft.SnackBar(content =ft.Text("Item added successfully to your cart",size=20),bgcolor=ft.colors.BLACK)
     router.overlay.append(feedbackBar)
     content = ft.Column([
         ft.Text("Make Your Own Pizza", size=40, weight = "bold"),

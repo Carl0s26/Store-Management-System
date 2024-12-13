@@ -246,7 +246,7 @@ def Reload(e,router):
     for i in range(len(router.controls[0].content.controls[0].rows)):
         print(router.controls[0].content.controls[0].rows[i].cells[3].content.value)
         untaxedPrice += router.controls[0].content.controls[0].rows[i].cells[3].content.value
-    totalPrice = untaxedPrice * 1.1
+    totalPrice = untaxedPrice * 1.18
     elementsToAppend.clear()
     elementsToAppend = [ft.Row(alignment=ft.MainAxisAlignment.END,controls=[
             ft.DataTable(divider_thickness=3,

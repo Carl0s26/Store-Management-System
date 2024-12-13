@@ -45,9 +45,16 @@ def login_View(router):
         router.go("/signUp")
 
     email_field = ft.TextField(label="Email", width=300)
-    password_field = ft.TextField(label="Password", password=True, width=250)
+    password_field = ft.TextField(
+        label="Password", 
+        password=True, 
+        width=300, 
+        suffix=ft.IconButton(
+            ft.icons.REMOVE_RED_EYE, 
+            on_click=toggle_password_visibility
+        )
+    )
     message = ft.Text(color=ft.colors.RED)
-    eye_button = ft.IconButton(ft.icons.REMOVE_RED_EYE, on_click=toggle_password_visibility)
 
     content = ft.Column(
         controls=[
@@ -58,7 +65,7 @@ def login_View(router):
             ft.Text("Login", size=30),
             email_field,
             ft.Row(
-                controls=[password_field, eye_button],
+                controls=[password_field],
                 alignment=ft.MainAxisAlignment.CENTER,
             ),
             ft.ElevatedButton("Submit", on_click=submit),
