@@ -41,7 +41,7 @@ def main(page: ft.Page):
             page.appbar = upperNavBar(page)
             page.bottom_appbar = lowerNavBar(page)
         
-        if page.route == "/" or page.route == "/profile":
+        if page.route == "/profile":
             id_content = profile_View(router)
             router.body.content = (id_content)
         

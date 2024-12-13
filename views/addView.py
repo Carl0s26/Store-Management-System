@@ -1,6 +1,8 @@
 import flet as ft
-import sqlite3
+import requests
 import base64
+
+API_URL = "http://127.0.0.1:8000" 
 
 def add_View(router):
     you_data = ft.Column()
@@ -11,8 +13,6 @@ def add_View(router):
     txt_description = ft.TextField(label="Description:", width=500, visible= False)
     save = ft.ElevatedButton("Save", icon=ft.icons.SAVE, disabled=True)
     convertImgToString = ''
-    conn = sqlite3.connect("delivery.db", check_same_thread=False)
-    cursor = conn.cursor()
 
     def propers(e):
         nonlocal convertImgToString
@@ -126,13 +126,28 @@ def add_View(router):
             
     def confirm(e):
         nonlocal convertImgToString
+        data = {
+            "name": txt_name.value,
+            "price": txt_price.value,
+            "stock": txt_stock.value,
+            "image": convertImgToString
+        }
+
         if table.value == 'Game':
-            cursor.execute("INSERT INTO Games (name, description, category, rating, image, price, stock) VALUES (?, ?, ?, ?, ?, ?, ?)",
-                        (txt_name.value, txt_description.value, categories.value, rating.value, convertImgToString, txt_price.value, txt_stock.value))
+            data.update({
+                "description": txt_description.value,
+                "category": categories.value,
+                "rating": rating.value
+            })
+            response = requests.post(f"{API_URL}/games", json=data)
         else:
-            cursor.execute("INSERT INTO Drinks (name, stock, image, price) VALUES (?, ?, ?, ?)",
-                        (txt_name.value, txt_stock.value, convertImgToString, txt_price.value))
-        conn.commit()
+            response = requests.post(f"{API_URL}/drinks", json=data)
+
+        if response.status_code == 201:
+            print("Item successfully added!")
+        else:
+            print("Error adding item:", response.text)
+
         table.value = txt_name.value = txt_description.value = categories.value = rating.value = txt_price.value = convertImgToString = txt_stock.value = ''
         preview.visible = False
         save.disabled = True

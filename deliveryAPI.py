@@ -344,47 +344,56 @@ class Customer(BaseModel):
     address: str
     birthdate: str
     subscription: str
+    password: str
 
 @app.post("/customers/", status_code=201)
 async def create_customer(customer: Customer):
-    if any(existing_customer.customerID == customer.customerID for existing_customer in customers_db):
-        raise HTTPException(status_code=409, detail="Customer ID already exists")
-    else:
-        conn = get_db_connection()
-        cursor = conn.cursor()
+    conn = get_db_connection()
+    cursor = conn.cursor()
 
     try:
         cursor.execute('''
-            INSERT INTO Customers (customerID, firstName, lastName, email, phone, address, birthdate, subscription) 
+            INSERT INTO Customers (firstName, lastName, email, phone, address, birthdate, subscription, password) 
             VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-        ''', (customer.customerID, customer.firstName, customer.lastName, customer.email, 
-              customer.phone, customer.address, customer.birthdate, customer.subscription))
+        ''', (customer.firstName, customer.lastName, customer.email, customer.phone,
+              customer.address, customer.birthdate, customer.subscription, customer.password))
         conn.commit()
     except IntegrityError:
         conn.close()
-        raise HTTPException(status_code=409, detail="Customer ID already exists")
+        raise HTTPException(status_code=409, detail="Error creating customer")
     
     conn.close()
     return {"message": "Customer added successfully"}
+
 
 @app.get("/customers/")
 async def get_customers(customerID: int = Query(None, description="ID of the customer to search for")):
     conn = get_db_connection()
     cursor = conn.cursor()
-    
     if customerID:
         cursor.execute("SELECT * FROM Customers WHERE customerID = ?", (customerID,))
     else:
         cursor.execute("SELECT * FROM Customers")
-    
     rows = cursor.fetchall()
     conn.close()
-    
     customers = [dict(row) for row in rows]
     if not customers:
         raise HTTPException(status_code=404, detail="Customer not found")
-    
     return customers
+
+
+@app.get("/customers/{customerID}")
+async def get_customer_by_id(customerID: int):
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM Customers WHERE customerID = ?", (customerID,))
+    row = cursor.fetchone()
+    conn.close()
+
+    if not row:
+        raise HTTPException(status_code=404, detail="Customer not found")
+    
+    return dict(row)
 
 @app.put("/customers/{customerID}")
 async def update_customer(customerID: int, updated_customer: Customer):
@@ -393,10 +402,10 @@ async def update_customer(customerID: int, updated_customer: Customer):
     
     cursor.execute('''
         UPDATE Customers SET firstName = ?, lastName = ?, email = ?, phone = ?, 
-        address = ?, birthdate = ?, subscription = ? WHERE customerID = ?
+        address = ?, birthdate = ?, subscription = ?, password = ? WHERE customerID = ?
     ''', (updated_customer.firstName, updated_customer.lastName, updated_customer.email, 
           updated_customer.phone, updated_customer.address, updated_customer.birthdate, 
-          updated_customer.subscription, customerID))
+          updated_customer.subscription, updated_customer.password, customerID))
     
     if cursor.rowcount == 0:
         conn.close()

@@ -1,23 +1,35 @@
 import flet as ft
-import sqlite3
+import requests
+import uuid
+
+API_URL = "http://127.0.0.1:8000" 
+
+def generate_customer_id():
+    return int(uuid.uuid4()) 
 
 def create_customer(firstName, lastName, email, phone, address, birthdate, password):
-    conn = sqlite3.connect("delivery.db")
-    cursor = conn.cursor()
-    query = """
-    INSERT INTO Customers (firstName, lastName, email, phone, address, birthdate, password)
-    VALUES (?, ?, ?, ?, ?, ?, ?)
-    """
-    try:
-        cursor.execute(query, (firstName, lastName, email, phone, address, birthdate, password))
-        conn.commit()
-        success = True
-    except sqlite3.IntegrityError:
-        success = False
-    finally:
-        conn.close()
+    customer_id = generate_customer_id()
+    data = {
+        "customerID": customer_id,
+        "firstName": firstName.strip(),
+        "lastName": lastName.strip(),
+        "email": email.strip().lower(),
+        "phone": phone.strip(),
+        "address": address.strip(),
+        "birthdate": birthdate,
+        "subscription": "",
+        "password": password.strip()
+    }
+    print(data)
+    response = requests.post(f"{API_URL}/customers/", json=data)
+
+    if response.status_code == 201:
+        print("Customer created successfully")
+        return True
+    else:
+        print(f"Failed to create customer: {response.status_code} - {response.text}")
+        return False
     
-    return success
 
 def signUp_View(router):
     def submit(e):
@@ -30,21 +42,20 @@ def signUp_View(router):
         password = password_field.value.strip()
         confirm_password = confirm_password_field.value.strip()
     
-        if month_dropdown.value != "Month":
+        if month_dropdown.value != "Month" and day_field.value and year_field.value:
             try:
-                day = int(day_field.value) if day_field.value else None
-                year = int(year_field.value) if year_field.value else None
-                
-                if (day is not None and (day < 1 or day > 31)) or (year is not None and (year <= 0 or year < 1924 or year > 2023)):
-                    raise ValueError
+                day = int(day_field.value)
+                year = int(year_field.value)
+                if day < 1 or day > 31 or year < 1924 or year > 2023:
+                    raise ValueError("Invalid day or year")
+
+                birthdate = f"{month_dropdown.value} {day}, {year}"
             except ValueError:
-                message.value = "Input a reasonable date."
+                message.value = "Input a valid date."
                 router.update()
                 return
-
-            birthdate = f"{month_dropdown.value} {day if day else ''}, {year if year else ''}"
         else:
-            birthdate = None
+            birthdate = ""
 
 
 
@@ -68,7 +79,7 @@ def signUp_View(router):
                 router.go("/login")
         router.update()
 
-    # Form fields
+
     first_name_field = ft.TextField(label="First Name", width=300, suffix_text="*", suffix_style=ft.TextStyle(color=ft.colors.RED))
     last_name_field = ft.TextField(label="Last Name", width=300)
     email_field = ft.TextField(label="Email", width=300, suffix_text="*", suffix_style=ft.TextStyle(color=ft.colors.RED))
