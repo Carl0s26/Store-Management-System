@@ -55,7 +55,7 @@ def upperNavBar(page,ft=ft):
             spacing=0,
         ),
         leading_width=80,
-        title=ft.Text("Shop Name",size=30),
+        title=ft.Text("Game & Slice",size=30),
         center_title=True,
         bgcolor= '#67e0ba',
         actions=[

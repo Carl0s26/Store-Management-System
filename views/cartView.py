@@ -11,11 +11,14 @@ import requests
 #todo mostrar numero de telefono
 #todo boton para pagar que te vacie el carrito y confirme que todo fue bien
 
+import sqlite3
 
 quantityDict = {
     "idk": 1
 }
+
 def pay(e,router):
+    from views.loginView import current_id
     crust = ""
     size = ""
     sauce = ""
@@ -83,11 +86,29 @@ def pay(e,router):
     views.drinksView.drinksBought.clear()
     views.gamesView.gamesBought.clear()
     router.controls[0].content.controls = []
-    router.controls[0].content.controls.append(ft.Text("Prints the NCF",size=35))
+
+    conn = sqlite3.connect("delivery.db")
+    cursor = conn.cursor()
+
+    cursor.execute("SELECT NCF FROM NCF_transactions ORDER BY rowid DESC LIMIT 1")
+    last_ncf = cursor.fetchone()
+    
+    if last_ncf:
+        ncf_value = last_ncf[0]
+        last_number = ncf_value.split('-')[-1]
+        new_number = str(int(last_number) + 1).zfill(len(last_number))
+        new_ncf = '-'.join(ncf_value.split('-')[:-1]) + '-' + new_number
+        print("New NCF:", new_ncf)
+        router.controls[0].content.controls.append(ft.Text(value=f"NCF: {new_ncf}", size=35))
+        cursor.execute('''
+            INSERT INTO NCF_transactions (NCF, CustomerID) VALUES (?, ?)
+                ''', (new_ncf, current_id))
+        conn.commit()
+    conn.close()
+        
     router.controls[0].content.controls.append(
         ft.Row(alignment=ft.MainAxisAlignment.SPACE_EVENLY,vertical_alignment=ft.alignment.center,controls=[
             ft.FilledButton("Reload",on_click=lambda e: Reload(e,router)),
-            ft.FilledButton("Pay for Cart",on_click=lambda e: pay(e,router))
         ]))
     router.update()
 
@@ -252,6 +273,7 @@ def Reload(e,router):
         router.controls[0].content.controls.append(element)
     router.update()
 
+done = False
 def cart_View(router):
     content = ft.Column([
         ft.DataTable(

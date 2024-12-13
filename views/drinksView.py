@@ -64,6 +64,5 @@ def drinks_View(router):
     content = ft.Column(horizontal_alignment=ft.CrossAxisAlignment.CENTER,alignment= ft.MainAxisAlignment.CENTER,controls=[
         ft.Text("Drinks",size=40,weight="bold",),
             drinksDisplayColumn,
-        ft.CupertinoButton(text="Drinks Shop",on_click=getDrinks),
     ])
     return content

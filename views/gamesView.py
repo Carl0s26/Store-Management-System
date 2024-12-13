@@ -73,6 +73,5 @@ def games_View(router):
     content = ft.Column(horizontal_alignment=ft.CrossAxisAlignment.CENTER,alignment= ft.MainAxisAlignment.CENTER,controls=[
         ft.Text("Games",size=40, weight="bold"),
         gamesDisplayColumn,
-        ft.CupertinoButton(text="Games Shop",on_click=getGames),
     ])
     return content

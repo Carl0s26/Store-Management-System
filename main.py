@@ -12,6 +12,7 @@ from views.routes import Router
 from userControls.userControl import lowerNavBar, upperNavBar
 
 from views.loginView import profile_View
+from views.cartView import Reload, done
 
 api_thread = threading.Thread(target=run_api, daemon=True)
 api_thread.start()
@@ -25,7 +26,7 @@ import pygame # pip install pygame
 def main(page: ft.Page):
     router = Router(page, ft)
     page.theme_mode = ft.ThemeMode.LIGHT
-    page.title = 'Shop name'
+    page.title = 'Game & Slice'
     page.window.width = 600
     page.window.height = 800
     page.bgcolor = '#c8eed8'
@@ -50,7 +51,7 @@ def main(page: ft.Page):
         if page.route == "/profile":
             id_content = profile_View(router)
             router.body.content = (id_content)
-        
+
         router.route_change(route)
         page.update()
 

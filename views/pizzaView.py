@@ -21,13 +21,13 @@ def createPizza(e,feedbackBar,router): # adds the pizza to the lists
     ingredients.append(sauce)
     print(ingredients)
     price = 0
-    price += ((len(ingredients)-3)*50)
+    price += ((len(ingredients)-3)*0.5)
     if size == "Small":
-        price += 200
+        price += 10
     elif size == "Medium":
-        price +=300
+        price +=12
     else:
-        price += 500
+        price += 15
     pizzasList.append(["Pizza",[],price])
     ingredients.sort()
     for ingredient in ingredients:

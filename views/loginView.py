@@ -52,7 +52,7 @@ def login_View(router):
     content = ft.Column(
         controls=[
             ft.Container(
-                content=ft.Text("Shop Name", size=50, weight="bold"),
+                content=ft.Text("Game & Slice", size=50, weight="bold"),
                 padding=ft.padding.only(top=60, bottom=50),
             ),
             ft.Text("Login", size=30),
