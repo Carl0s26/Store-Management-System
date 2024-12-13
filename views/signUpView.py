@@ -54,8 +54,18 @@ def signUp_View(router):
             message.value = "Passwords do not match."
         else:
             if create_customer(firstName, lastName, email, phone, address, birthdate, password):
-                message.value("")
-                router.go("/")
+                first_name_field.value = ""
+                last_name_field.value = ""
+                email_field.value = ""
+                phone_field.value = ""
+                address_field.value = ""
+                month_dropdown.value = "Month"
+                day_field.value = ""
+                year_field.value = ""
+                password_field.value = ""
+                confirm_password_field.value = ""
+                message.value = ""
+                router.go("/login")
         router.update()
 
     # Form fields
