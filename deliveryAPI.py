@@ -199,6 +199,8 @@ async def create_drink(drink: Drink):
     conn.close()
     return {"message": "Drink added successfully"}
 
+
+
 @app.get("/drinks/")
 async def get_drinks(drinkID: int = Query(None, description="ID of the drink to search for")):
     conn = get_db_connection()
@@ -255,30 +257,31 @@ async def delete_drink(drinkID: int):
 pizzas_db = []
 
 class Pizza(BaseModel):
-    PizzaID: int
+    # PizzaID: int
     crust: str
     size: str
     sauce: str
 
 @app.post("/pizzas/", status_code=201)
 async def create_pizza(pizza: Pizza):
-    if any(existing_pizza.PizzaID == pizza.PizzaID for existing_pizza in pizzas_db):
-        raise HTTPException(status_code=409, detail="Pizza ID already exists")
-    else:
-        conn = get_db_connection()
-        cursor = conn.cursor()
+    # if any(existing_pizza.PizzaID == pizza.PizzaID for existing_pizza in pizzas_db):
+    #     raise HTTPException(status_code=409, detail="Pizza ID already exists")
+    # else:
+    conn = get_db_connection()
+    cursor = conn.cursor()
 
     try:
         cursor.execute('''
-            INSERT INTO Pizzas (PizzaID, crust, size, sauce) VALUES (?, ?, ?, ?)
-        ''', (pizza.PizzaID, pizza.crust, pizza.size, pizza.sauce))
+            INSERT INTO Pizzas (crust, size, sauce) VALUES (?, ?, ?)
+        ''', (pizza.crust, pizza.size, pizza.sauce))
         conn.commit()
+        pizza_id = cursor.lastrowid
     except IntegrityError:
         conn.close()
         raise HTTPException(status_code=409, detail="Pizza ID already exists")
     
     conn.close()
-    return {"message": "Pizza added successfully"}
+    return {"message": "Pizza added successfully", "PizzaID": pizza_id}
 
 @app.get("/pizzas/")
 async def get_pizzas(PizzaID: int = Query(None, description="ID of the pizza to search for")):
@@ -429,28 +432,56 @@ async def delete_customer(customerID: int):
     conn.close()
 
 
+class CustomerPizzaRecord(BaseModel):
+    PizzaID: int
+    CustomerID: int
+
+customer_pizza_db = []
+
+# Database connection
+def get_db_connection():
+    conn = sqlite3.connect("delivery.db")
+    conn.row_factory = sqlite3.Row
+    return conn
+
+@app.post("/customer_pizza_record/", status_code=201)
+async def create_customer_pizza_record(record: CustomerPizzaRecord):
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        try:
+            cursor.execute('''
+                INSERT INTO Customer_Pizza_Record (PizzaID, CustomerID) VALUES (?, ?)
+            ''', (record.PizzaID, record.CustomerID))
+            conn.commit()
+        except sqlite3.IntegrityError:
+            conn.close()
+            raise HTTPException(status_code=409, detail="Record already exists or constraint violated")
+        
+        conn.close()
+        return {"message": "Record added successfully"}
+
 
 
 
 ingredients_db = []
 
 class Ingredient(BaseModel):
-    ingredientID: int
+    # ingredientID: int
     name: str
-    stock: str
+    stock: int
 
 @app.post("/ingredients/", status_code=201)
 async def create_ingredient(ingredient: Ingredient):
-    if any(existing_ingredient.ingredientID == ingredient.ingredientID for existing_ingredient in ingredients_db):
-        raise HTTPException(status_code=409, detail="Ingredient ID already exists")
-    else:
-        conn = get_db_connection()
-        cursor = conn.cursor()
+    # if any(existing_ingredient.ingredientID == ingredient.ingredientID for existing_ingredient in ingredients_db):
+    #     raise HTTPException(status_code=409, detail="Ingredient ID already exists")
+    # else:
+    conn = get_db_connection()
+    cursor = conn.cursor()
 
     try:
         cursor.execute('''
-            INSERT INTO Ingredients (ingredientID, name, stock) VALUES (?, ?, ?)
-        ''', (ingredient.ingredientID, ingredient.name, ingredient.stock))
+            INSERT INTO Ingredients (name, stock) VALUES (?, ?)
+        ''', (ingredient.name, ingredient.stock))
         conn.commit()
     except IntegrityError:
         conn.close()
@@ -459,24 +490,38 @@ async def create_ingredient(ingredient: Ingredient):
     conn.close()
     return {"message": "Ingredient added successfully"}
 
-@app.get("/ingredients/")
-async def get_ingredients(ingredientID: int = Query(None, description="ID of the ingredient to search for")):
-    conn = get_db_connection()
+@app.get("/ingredients/{name}/")
+async def get_ingredient_id(name: str):
+    conn = sqlite3.connect("delivery.db")
     cursor = conn.cursor()
-    
-    if ingredientID:
-        cursor.execute("SELECT * FROM Ingredients WHERE ingredientID = ?", (ingredientID,))
-    else:
-        cursor.execute("SELECT * FROM Ingredients")
-    
-    rows = cursor.fetchall()
+
+    cursor.execute("SELECT ingredientID FROM Ingredients WHERE name = ?", (name,))
+    result = cursor.fetchone()
     conn.close()
-    
-    ingredients = [dict(row) for row in rows]
-    if not ingredients:
+
+    if result is None:
         raise HTTPException(status_code=404, detail="Ingredient not found")
     
-    return ingredients
+    return {"ingredientID": result[0]}
+
+# @app.get("/ingredients/")
+# async def get_ingredients(ingredientID: int = Query(None, description="ID of the ingredient to search for")):
+#     conn = get_db_connection()
+#     cursor = conn.cursor()
+    
+#     if ingredientID:
+#         cursor.execute("SELECT * FROM Ingredients WHERE ingredientID = ?", (ingredientID,))
+#     else:
+#         cursor.execute("SELECT * FROM Ingredients")
+    
+#     rows = cursor.fetchall()
+#     conn.close()
+    
+#     ingredients = [dict(row) for row in rows]
+#     if not ingredients:
+#         raise HTTPException(status_code=404, detail="Ingredient not found")
+    
+#     return ingredients
 
 @app.put("/ingredients/{ingredientID}")
 async def update_ingredient(ingredientID: int, updated_ingredient: Ingredient):

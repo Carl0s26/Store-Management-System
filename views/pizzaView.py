@@ -6,18 +6,46 @@ crust = None
 sauce = None
 ingredients = []
 
-class Pizza:
-    def __init__(self,size,crust,ingredients):
-        self.size = size
-        self.crust = crust
-        self.ingredients = ingredients
+# class Pizza:
+#     def __init__(self,size,crust,ingredients):
+#         self.size = size
+#         self.crust = crust
+#         self.ingredients = ingredients
 
 def createPizza(e,feedbackBar,router): # adds the pizza to the lists
-    print("Arrived here")
-    pizzasList.append(Pizza(size=size,crust=crust,ingredients=ingredients))
+    size = router.controls[0].content.controls[2].controls[0].value
+    crust = router.controls[0].content.controls[2].controls[1].value
+    sauce = router.controls[0].content.controls[2].controls[2].value
+    ingredients.append(size)
+    ingredients.append(crust)
+    ingredients.append(sauce)
+    print(ingredients)
+    price = 0
+    price += ((len(ingredients)-3)*50)
+    if size == "Small":
+        price += 200
+    elif size == "Medium":
+        price +=300
+    else:
+        price += 500
+    pizzasList.append(["Pizza",[],price])
+    ingredients.sort()
+    for ingredient in ingredients:
+        pizzasList[len(pizzasList)-1][1].append(ingredient)
     print(pizzasList)
     feedbackBar.open = True
     router.update()
+    for i in range(len(router.controls[0].content.controls[4].controls[0].controls)): # reseting the ingredients value on the view
+        if router.controls[0].content.controls[4].controls[0].controls[i].value == True:
+            router.controls[0].content.controls[4].controls[0].controls[i].value = False
+            # router.controls[0].content.controls[4].controls[1].controls[i].update()
+    for i in range(len(router.controls[0].content.controls[4].controls[0].controls)):
+        if router.controls[0].content.controls[4].controls[1].controls[i].value == True:
+            router.controls[0].content.controls[4].controls[1].controls[i].value = False
+            # router.controls[0].content.controls[4].controls[1].controls[i].update()
+    ingredients.clear()
+    router.update()
+
 
 def addIngredient(e): # customizes pizza
     if e.control.value:
@@ -47,27 +75,36 @@ def pizza_View(router):
                 alignment=ft.MainAxisAlignment.SPACE_EVENLY,
                 controls=[
                 ft.Dropdown( 
-                width= 140,
-                options=[
+                    value = "Small",
+                    width= 140,
+                    bgcolor="green",
+                    options=[
                         ft.dropdown.Option("Small"),
                         ft.dropdown.Option("Medium"),
                         ft.dropdown.Option("Big"),
-                ],bgcolor="green"),
+                    ]
+                ),
                 ft.Dropdown(
-                width=140,
-                options=[
+                    value= "Thin Crust",
+                    width=140,
+                    bgcolor="white",
+                    options=[
                         ft.dropdown.Option("Thin Crust"),
                         ft.dropdown.Option("Thick Crust"),
                         ft.dropdown.Option("Stuffed Crust"),
-                ],bgcolor="white"),
+                    ]
+                ),
                 ft.Dropdown(
-                width=140,
-                options=[
+                    value = "Red Sauce",
+                    width=140,
+                    bgcolor="red",
+                    options=[
                         ft.dropdown.Option("Red Sauce"),
                         ft.dropdown.Option("White Sauce"),
                         ft.dropdown.Option("Pesto Sauce"),
                         ft.dropdown.Option("BBQ Sauce"),
-                ],bgcolor="red"),
+                    ]
+                ),
         ]),
         ft.Row(controls=[ft.Text("Ingredients",size=30)],alignment=ft.MainAxisAlignment.CENTER),
         ft.Row(alignment=ft.MainAxisAlignment.SPACE_AROUND,controls=[

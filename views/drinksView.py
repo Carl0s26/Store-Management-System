@@ -15,7 +15,7 @@ def drinksToCart(e,feedbackBar,router):
     
 
 def drinks_View(router):
-    feedbackBar = ft.SnackBar(content =ft.Text("Item successfully to your cart",size=20),bgcolor=ft.colors.BLACK)
+    feedbackBar = ft.SnackBar(content =ft.Text("Item added successfully to your cart",size=20),bgcolor=ft.colors.BLACK)
     router.overlay.append(feedbackBar)
     drinkRows = []
     response = requests.get("http://127.0.0.1:8000/drinks/")
@@ -29,7 +29,7 @@ def drinks_View(router):
                             ft.Text(text_align=ft.TextAlign.CENTER,value=data["name"],weight="bold", size=20),
                             ft.Image(width=200, height=200, src_base64= data["image"]),
                             ft.Text("$" + str("{:.2f}".format(data["price"])),weight="bold", size=20),
-                            ft.FilledButton(data=data,text="Add to cart",on_click=lambda e: drinksToCart(e,feedbackBar,router))
+                            ft.FilledButton(data=["Drink",data["name"],str("{:.2f}".format(data["price"]))],text="Add to cart",on_click=lambda e: drinksToCart(e,feedbackBar,router))
                         ])         
                     ),
                     ft.Container(height=360,width=250,border=ft.border.all(1,ft.colors.WHITE),alignment=ft.alignment.center,bgcolor=ft.colors.BLUE_200,content= # creating the drink container with drink data
@@ -37,7 +37,7 @@ def drinks_View(router):
                             ft.Text(text_align=ft.TextAlign.CENTER,value=response.json()[i+1]["name"],weight="bold", size=20),
                             ft.Image(width=200, height=200, src_base64= response.json()[i+1]["image"]),
                             ft.Text("$" + str("{:.2f}".format(response.json()[i+1]["price"])),weight="bold", size=20),
-                            ft.FilledButton(data=response.json()[i+1],text="Add to cart",on_click=lambda e: drinksToCart(e,feedbackBar,router))
+                            ft.FilledButton(data=["Drink",response.json()[i+1]["name"],response.json()[i+1]["price"]],text="Add to cart",on_click=lambda e: drinksToCart(e,feedbackBar,router))
                         ])         
                     )
                 ])   
@@ -50,7 +50,7 @@ def drinks_View(router):
                             ft.Text(text_align=ft.TextAlign.CENTER,value=data["name"],weight="bold", size=20),
                             ft.Image(width=200, height=200, src_base64= data["image"]),
                             ft.Text("$" + str("{:.2f}".format(data["price"])),weight="bold", size=20),
-                            ft.FilledButton(data=data,text="Add to cart",on_click=lambda e: drinksToCart(e,feedbackBar,router))
+                            ft.FilledButton(data=["Drink",data["name"],str("{:.2f}".format(data["price"]))],text="Add to cart",on_click=lambda e: drinksToCart(e,feedbackBar,router))
                         ])         
                     )
                 ])

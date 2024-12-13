@@ -7,7 +7,7 @@ if platform.system() == "Darwin":
 
 import flet as ft
 import threading
-from deliveryAPI import run_api
+from deliveryApi import run_api
 from views.routes import Router
 from userControls.userControl import lowerNavBar, upperNavBar
 
@@ -15,6 +15,12 @@ from views.loginView import profile_View
 
 api_thread = threading.Thread(target=run_api, daemon=True)
 api_thread.start()
+from userControls.userControl import lowerNavBar
+from userControls.userControl import upperNavBar
+import pygame # pip install pygame
+
+#? flet run main.py -r 
+
 
 def main(page: ft.Page):
     router = Router(page, ft)
@@ -52,5 +58,6 @@ def main(page: ft.Page):
     router.page = page
     
     page.go('/login')
+    # page.go('/')
 
 ft.app(target=main, assets_dir="assets")

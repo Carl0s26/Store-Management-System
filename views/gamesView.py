@@ -8,9 +8,10 @@ def getGames(e):
     pass
 
 def gameToCart(e,feedbackBar,router):
-    gamesBought.append(e.control.data)
+    gamesBought.append(e.control.data) # creating the datacells here due to an issue when creating them in the cart view
     feedbackBar.open = True
     router.update()
+    #print(gamesBought)
 
 def games_View(router):
     feedbackBar = ft.SnackBar(content =ft.Text("Item successfully to your cart",size=20),bgcolor=ft.colors.BLACK)
@@ -30,7 +31,7 @@ def games_View(router):
                             ft.Text(data["category"],weight="bold",),
                             ft.Text(data["rating"]),
                             ft.Text("$" + str("{:.2f}".format(data["price"]))),
-                            ft.FilledButton(data=data,text="Add to cart",on_click=lambda e: gameToCart(e,feedbackBar,router))
+                            ft.FilledButton(data=["Video Game",data["name"],str("{:.2f}".format(data["price"]))],text="Add to cart",on_click=lambda e: gameToCart(e,feedbackBar,router))
                         ])         
                     ),
                     ft.Container(height=500,width=250,border=ft.border.all(1,ft.colors.WHITE),alignment=ft.alignment.center,bgcolor=ft.colors.RED_300,content= # creating the game container with game data
@@ -41,7 +42,7 @@ def games_View(router):
                             ft.Text(response.json()[i+1]["category"],weight="bold",),
                             ft.Text(response.json()[i+1]["rating"]),
                             ft.Text("$" + str("{:.2f}".format(response.json()[i+1]["price"]))),
-                            ft.FilledButton(data=response.json()[i+1],text="Add to cart",on_click=lambda e: gameToCart(e,feedbackBar,router))
+                            ft.FilledButton(data=["Video Game",response.json()[i+1]["name"],response.json()[i+1]["price"]],text="Add to cart",on_click=lambda e: gameToCart(e,feedbackBar,router))
                         ])         
                     )
                 ])   
@@ -57,7 +58,7 @@ def games_View(router):
                             ft.Text(data["category"],weight="bold",),
                             ft.Text(data["rating"]),
                             ft.Text("$" + str("{:.2f}".format(data["price"]))),
-                            ft.FilledButton(data=data,text="Add to cart",on_click=lambda e: gameToCart(e,feedbackBar,router))
+                            ft.FilledButton(data=["Video Game",data["name"],str("{:.2f}".format(data["price"]))],text="Add to cart",on_click=lambda e: gameToCart(e,feedbackBar,router))
                         ])         
                     )
                 ])
