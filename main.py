@@ -62,3 +62,5 @@ def main(page: ft.Page):
     # page.go('/')
 
 ft.app(target=main, assets_dir="assets")
+
+# flet run --web main.py
